@@ -16,11 +16,11 @@ library(tidyverse)
 
 ```{r, read_n_clean, include = FALSE}
 CircadianTrials <- read_csv("./data/CircadianTrials.csv") %>%
-  select(year, drug, halflife.hr = halflife.hrs.min, therapeutic.area = therapeutic.area, subjects, timepoints, effect.bin, reference)
+  select(year, drug, halflife.hr = halflife.hrs.min, therapeutic.area = therapeutic.area, effect.bin, subjects, timepoints,  reference)
 ```
 
 ```{r, head}
-head(CircadianTrials[, 1:4])
+head(CircadianTrials[, 1:5])
 ```
 
 ```{r, plot_prep,include= FALSE}
