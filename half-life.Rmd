@@ -7,7 +7,7 @@ output: github_document
 
 ## Half-life matters
 
-Relationship between drug half-lives and "successes" in circadian medicine trials. **CircadianTrials** dataset with details of human trials of dosing time available in repository. 
+Relationship between drug half-lives and "successes" in circadian trials. Dataset named **CircadianTrials** contains details of more than 100 human trials of dosing time. Available in this repo. 
 
 
 ```{r, load_packages, include = FALSE}
@@ -16,11 +16,35 @@ library(tidyverse)
 
 ```{r, read_n_clean, include = FALSE}
 CircadianTrials <- read_csv("./data/CircadianTrials.csv") %>%
-  select(year, drug, halflife.hr = halflife.hrs.min, therapeutic.area = therapeutic.area, subjects, timepoints, effect, reference)
+  select(year, drug, halflife.hr = halflife.hrs.min, therapeutic.area = therapeutic.area, subjects, timepoints, effect.bin, reference)
 ```
 
 ```{r, head}
 head(CircadianTrials[, 1:4])
 ```
 
-## Including Plots
+```{r, plot_prep,include= FALSE}
+hlf <- CircadianTrials %>%
+  filter(halflife.hr != is.na(halflife.hr)) %>% #trials where drug half-life is known
+  mutate(halflife.bins = cut_number(halflife.hr, 8)) %>% #bin half lives into roughly equal numbers
+  group_by(halflife.bins, effect.bin) %>%
+  summarise(count = n()) %>%
+  summarise(pct_support = count[which(effect.bin == "eff/tox")] / sum (count)) %>% #percent trials that support circ med for each half-life bin
+  mutate(index = seq(1, 8, by = 1)) #for numerical axis
+
+#polynomial model, quadratic
+my.formula <- y ~ poly(x, 2, raw = TRUE)
+```
+
+```{r, plot, echo = FALSE}
+ggplot(hlf, aes(x = index, y = pct_support)) +
+  geom_point(size = 2.25) +
+  geom_smooth(method = 'lm', formula = my.formula, size = 1.2,  color = "#0072B2", se=FALSE) +
+  scale_y_continuous(limits = c(0.25, 1.05), breaks = seq(0, 1, by = 0.1)) +
+  scale_x_continuous(breaks = seq(1, 8, by = 1), labels = c("0-0.5", "0.5-2", "2-3", "3-6", "6-8", "8-15", "15-25","25-50" )) +
+  labs(y = "% Trials with time-of-day effect", x = "Drug half-life (hours)") +
+  theme(axis.text.x = element_text(angle = 90, size = 14), axis.title.y = element_text(size = 14))
+```
+
+
+

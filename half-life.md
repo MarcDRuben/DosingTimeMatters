@@ -1,13 +1,13 @@
 Dosing Time
 ================
 MarcDRuben
-2019-04-13
+2019-04-14
 
 ## Half-life matters
 
 Relationship between drug half-lives and “successes” in circadian
-medicine trials. **CircadianTrials** dataset with details of human
-trials of dosing time available in repository.
+trials. Dataset named **CircadianTrials** contains details of more than
+100 human trials of dosing time. Available in this repo.
 
 ``` r
 head(CircadianTrials[, 1:4])
@@ -23,4 +23,4 @@ head(CircadianTrials[, 1:4])
     ## 5  2006 oxaliplatin, fluoro…         0.5 colorectal cancer                 
     ## 6  2009 radiotherapy                NA   head and neck cancer
 
-## Including Plots
+![](half-life_files/figure-gfm/plot-1.png)<!-- -->
