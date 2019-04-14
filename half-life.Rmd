@@ -1,0 +1,26 @@
+---
+title: "Dosing Time"
+author: "MarcDRuben"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+## Half-life matters
+
+Relationship between drug half-lives and "successes" in circadian medicine trials. **CircadianTrials** dataset with details of human trials of dosing time available in repository. 
+
+
+```{r, load_packages, include = FALSE}
+library(tidyverse)
+```
+
+```{r, read_n_clean, include = FALSE}
+CircadianTrials <- read_csv("./data/CircadianTrials.csv") %>%
+  select(year, drug, halflife.hr = halflife.hrs.min, therapeutic.area = therapeutic.area, subjects, timepoints, effect, reference)
+```
+
+```{r, head}
+head(CircadianTrials[, 1:4])
+```
+
+## Including Plots
